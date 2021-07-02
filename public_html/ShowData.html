@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Show All Data</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Show Data</h2>
+            <table class="table-responsive">
+                <thead>
+                    <tr>
+                        <th>Employee Id</th>
+                        <th>Employee Name</th>
+                        <th>Employee Email</th></tr>
+                </thead>
+                <tbody id="showdata"></tbody>
+            </table>
+        </div>
+        <script>
+            $(document).ready(function(f) {
+                var putReqStr = createGETALLRecordRequest("90935934|-31948847972571272|90944651",
+                        "Employee", "Emp-Rel", 1, 20, true, true);
+           //     alert(putReqStr);
+                jQuery.ajaxSetup({async: false});
+                var resultObj = executeCommandAtGivenBaseUrl(putReqStr,
+                        "http://api.login2explore.com:5577", "/api/irl");
+             //   alert(JSON.stringify(resultObj));
+                var data = JSON.parse(resultObj.data);
+                var d = data.json_records;
+                var res = "";
+                for (var i = 0; i < d.length; i++) {
+                    res = "<tr><td>" + d[i].record.empId + "</td>" +
+                            "<td>" + d[i].record.empName + "</td>" +
+                            "<td>" + d[i].record.empEmail + "</td></tr>";
+                }
+                $('#showdata').append(res);
+                jQuery.ajaxSetup({async: true});
+
+            })
+
+        </script>
+    </body>
+</html>
